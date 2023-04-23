@@ -1,0 +1,25 @@
+{
+  "block_size": 120,
+  "block_count": 10000,
+  "simulation_regions": [
+    2500,
+    5000,
+    7500
+  ],
+  "simulation_region_loads": [
+    110,
+    480,
+    240,
+    110
+  ],
+  "correlated_region_count": 2,
+  "target_tx_count_per_tier": 30,
+  "max_tiers": 4,
+  "delay_frequency": 25,
+  "probability_decrease": 25,
+  "tier_frequency": 100,
+  "add_tier_price": 2,
+  "remove_tier_price": 1,
+  "price_percentage": 50,
+  "delay_percentage": 25
+}

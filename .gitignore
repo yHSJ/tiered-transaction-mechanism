@@ -1,0 +1,9 @@
+.idea
+/tiered-pricing-mechanism.jar
+
+### Gradle ###
+.gradle
+**/build/
+!src/**/build/
+!gradle-wrapper.jar
+!gradle-wrapper.properties
