@@ -65,7 +65,7 @@ public class Blockchain {
 
         addMempoolTransactionsToBlock(block);
 
-        System.out.println("Block created with " + block.getTransactions().size() + " transactions | Mempool size: " + MEMPOOL.size());
+        System.out.println("Block created with " + block.getTransactions().size() + " transactions | Txs excluded from all tiers: " + MEMPOOL.size());
         return block;
     }
 

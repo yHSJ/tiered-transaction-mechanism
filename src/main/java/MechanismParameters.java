@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class MechanismParameters {
 
     private final int MAX_TIERS;
@@ -8,8 +10,8 @@ public class MechanismParameters {
     private final int DELAY_FREQUENCY;
     private final int PROBABILITY_DECREASE;
     private final int TIER_FREQUENCY;
-    private final int PRICE_PERCENTAGE;
-    private final int DELAY_PERCENTAGE;
+    private final ArrayList<Double> TIER_PRICE_MULTIPLIERS;
+    private final ArrayList<Double> TIER_DELAY_MULTIPLIERS;
 
     public MechanismParameters(Builder builder) {
         this.MAX_TIERS = builder.maxTiers;
@@ -20,8 +22,9 @@ public class MechanismParameters {
         this.DELAY_FREQUENCY = builder.delayFrequency;
         this.PROBABILITY_DECREASE = builder.probabilityDecrease;
         this.TIER_FREQUENCY = builder.tierFrequency;
-        this.PRICE_PERCENTAGE = builder.pricePercentage;
-        this.DELAY_PERCENTAGE = builder.delayPercentage;
+        this.TIER_PRICE_MULTIPLIERS = builder.tierPriceMultipliers;
+        this.TIER_DELAY_MULTIPLIERS = builder.tierDelayMultipliers;
+
     }
 
     public int getMaxTiers() {
@@ -49,20 +52,20 @@ public class MechanismParameters {
         return TIER_FREQUENCY;
     }
 
-    public double getPriceMultiplier() {
-        return PRICE_PERCENTAGE / 100.0;
-    }
-
-    public double getMinDelayMultiplier() {
-        return DELAY_PERCENTAGE / 100.0;
-    }
-
     public int getProbabilityDecrease() {
         return PROBABILITY_DECREASE;
     }
 
     public int getMaxTransactionPerBlock() {
         return MAX_TRANSACTIONS_PER_BLOCK;
+    }
+
+    public double getTierPriceMultiplier(int tier) {
+        return TIER_PRICE_MULTIPLIERS.get(tier);
+    }
+
+    public double getTierDelayMultiplier(int tier) {
+        return TIER_DELAY_MULTIPLIERS.get(tier);
     }
 
     public static class Builder {
@@ -74,8 +77,8 @@ public class MechanismParameters {
         private int delayFrequency;
         private int tierFrequency;
         private int probabilityDecrease;
-        private int pricePercentage;
-        private int delayPercentage;
+        private ArrayList<Double> tierPriceMultipliers;
+        private ArrayList<Double> tierDelayMultipliers;
 
         private Builder() {
         }
@@ -85,8 +88,7 @@ public class MechanismParameters {
         }
 
         public Builder setMaxTiers(int maxTiers) throws RuntimeException {
-            if (maxTiers < 1)
-                throw new RuntimeException("Max tiers must be greater than 0");
+            if (maxTiers < 1) throw new RuntimeException("Max tiers must be greater than 0");
 
             this.maxTiers = maxTiers;
             return this;
@@ -110,32 +112,28 @@ public class MechanismParameters {
         }
 
         public Builder setRemoveTierPrice(double removeTierPrice) throws RuntimeException {
-            if (removeTierPrice < 0)
-                throw new RuntimeException("Remove tier price must be greater than 0");
+            if (removeTierPrice < 0) throw new RuntimeException("Remove tier price must be greater than 0");
 
             this.removeTierPrice = removeTierPrice;
             return this;
         }
 
         public Builder setAddTierPrice(double addTierPrice) throws RuntimeException {
-            if (addTierPrice < 0)
-                throw new RuntimeException("Add tier price must be greater than 0");
+            if (addTierPrice < 0) throw new RuntimeException("Add tier price must be greater than 0");
 
             this.addTierPrice = addTierPrice;
             return this;
         }
 
         public Builder setDelayFrequency(int delayFrequency) throws RuntimeException {
-            if (delayFrequency < 0)
-                throw new RuntimeException("Delay frequency must be greater than 0");
+            if (delayFrequency < 0) throw new RuntimeException("Delay frequency must be greater than 0");
 
             this.delayFrequency = delayFrequency;
             return this;
         }
 
         public Builder setTierFrequency(int tierFrequency) throws RuntimeException {
-            if (tierFrequency < 0)
-                throw new RuntimeException("Tier frequency must be greater than 0");
+            if (tierFrequency < 0) throw new RuntimeException("Tier frequency must be greater than 0");
 
             this.tierFrequency = tierFrequency;
             return this;
@@ -149,19 +147,19 @@ public class MechanismParameters {
             return this;
         }
 
-        public Builder setPricePercentage(int priceMultiplier) throws RuntimeException {
-            if (priceMultiplier < 0 || priceMultiplier > 100)
-                throw new RuntimeException("Price multiplier must be in the range [0, 100]");
+        public Builder setTierPriceMultipliers(ArrayList<Double> tierPriceMultipliers) throws RuntimeException {
+            if (tierPriceMultipliers.size() != maxTiers)
+                throw new RuntimeException("There must be the same number of price multipliers as there are tiers");
 
-            this.pricePercentage = priceMultiplier;
+            this.tierPriceMultipliers = tierPriceMultipliers;
             return this;
         }
 
-        public Builder setDelayPercentage(int delayPercentage) throws RuntimeException {
-            if (delayPercentage < 0 || delayPercentage > 100)
-                throw new RuntimeException("Delay percentage must be in the range [0, 100]");
+        public Builder setTierDelayMultipliers(ArrayList<Double> tierDelayMultipliers) throws RuntimeException {
+            if (tierDelayMultipliers.size() != maxTiers)
+                throw new RuntimeException("There must be the same number of delay multipliers as there are tiers");
 
-            this.delayPercentage = delayPercentage;
+            this.tierDelayMultipliers = tierDelayMultipliers;
             return this;
         }
 

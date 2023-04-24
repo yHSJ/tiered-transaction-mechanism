@@ -20,6 +20,10 @@ public class Config {
     private ArrayList<Integer> simulationRegionLoads;
     private int correlatedRegionCount;
 
+    private ArrayList<Double> tierPriceMultipliers;
+
+    private ArrayList<Double> tierDelayMultipliers;
+
     public Config() {
     }
 
@@ -136,4 +140,19 @@ public class Config {
         this.correlatedRegionCount = correlatedRegionCount;
     }
 
+    public ArrayList<Double> getTierDelayMultipliers() {
+        return tierDelayMultipliers;
+    }
+
+    public void setTierDelayMultipliers(ArrayList<Double> tierDelayMultipliers) {
+        this.tierDelayMultipliers = tierDelayMultipliers;
+    }
+
+    public ArrayList<Double> getTierPriceMultipliers() {
+        return tierPriceMultipliers;
+    }
+
+    public void setTierPriceMultipliers(ArrayList<Double> tierPriceMultipliers) {
+        this.tierPriceMultipliers = tierPriceMultipliers;
+    }
 }

@@ -1,17 +1,22 @@
 public class Tier {
 
     private final int ID;
+    private final double PRICE_MULTIPLIER;
+    private final double DELAY_MULTIPLIER;
     int demand = 0;
     private int delay;
     private double price;
-    private int targetFullness;
+    private int targetTxCount;
 
-    public Tier(int id, int delay, double price, int targetFullness) {
+    public Tier(int id, double priceMultiplier, double delayMultiplier, int delay, double price, int targetTxCount) {
         this.ID = id;
+        this.PRICE_MULTIPLIER = priceMultiplier;
+        this.DELAY_MULTIPLIER = delayMultiplier;
         this.delay = delay;
         this.price = price;
-        this.targetFullness = targetFullness;
+        this.targetTxCount = targetTxCount;
     }
+
 
     public void updateEIP1559(int maxBlockSize) {
         double targetFullness = (double) getTargetTxCount() / maxBlockSize;
@@ -27,20 +32,28 @@ public class Tier {
         this.delay = delay;
     }
 
+    public double getDelayMultiplier() {
+        return DELAY_MULTIPLIER;
+    }
+
+    public double getPriceMultiplier() {
+        return PRICE_MULTIPLIER;
+    }
+
     public double getPrice() {
         return price;
     }
 
     public double getFullness() {
-        return (double) demand / targetFullness;
+        return (double) demand / targetTxCount;
     }
 
     public int getTargetTxCount() {
-        return targetFullness;
+        return targetTxCount;
     }
 
     public void setTargetTxCount(int targetFullness) {
-        this.targetFullness = targetFullness;
+        this.targetTxCount = targetFullness;
     }
 
     public int getID() {
@@ -56,13 +69,11 @@ public class Tier {
         if ((other == null) || (getClass() != other.getClass())) return false;
 
         Tier otherTier = (Tier) other;
-        return (delay == otherTier.delay)
-                && (price == otherTier.price)
-                && (targetFullness == otherTier.targetFullness);
+        return (delay == otherTier.delay) && (price == otherTier.price) && (targetTxCount == otherTier.targetTxCount);
     }
 
     @Override
     public String toString() {
-        return "Tier " + ID + ": delay = " + delay + ", price = " + price + ", targetFullness = " + targetFullness + ", demand = " + demand;
+        return "Tier " + ID + ": delay = " + delay + ", price = " + price + ", targetFullness = " + targetTxCount + ", demand = " + demand;
     }
 }
