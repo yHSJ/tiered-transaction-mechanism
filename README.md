@@ -13,7 +13,7 @@ This project uses [Gradle](https://gradle.org/) as the build tool, and requires 
 project, you can use the following command in the root of the repository:
 
 ```bash
-gradle clone https://github.com/yHSJ/tiered-transaction-mechanism.git \
+git clone https://github.com/yHSJ/tiered-transaction-mechanism.git \
 &&  cd tiered-transaction-mechanism \
 && ./gradlew build \
 && java -jar tiered-transaction-mechanism.jar
