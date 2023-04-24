@@ -66,6 +66,8 @@ public class Main {
             parameters = MechanismParameters.Builder
                     .newInstance()
                     .setMaxTiers(config.getMaxTiers())
+                    .setTierPriceMultipliers(config.getTierPriceMultipliers())
+                    .setTierDelayMultipliers(config.getTierDelayMultipliers())
                     .setMaxTransactionsPerBlock(config.getBlockSize())
                     .setTargetTxCountPerTier(config.getTargetTxCountPerTier())
                     .setRemoveTierPrice(config.getRemoveTierPrice())
@@ -73,8 +75,6 @@ public class Main {
                     .setDelayFrequency(config.getDelayFrequency())
                     .setTierFrequency(config.getTierFrequency())
                     .setProbabilityDecrease(config.getProbabilityDecrease())
-                    .setPricePercentage(config.getPricePercentage())
-                    .setDelayPercentage(config.getDelayPercentage())
                     .build();
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());

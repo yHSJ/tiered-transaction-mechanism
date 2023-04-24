@@ -12,7 +12,7 @@ public class Mechanism {
         this.PARAMS = params;
 
         TIERS = new ArrayList<>();
-        TIERS.add(new Tier(0, 1, PARAMS.getRemoveTierPrice(), PARAMS.getMaxTransactionPerBlock()));
+        TIERS.add(new Tier(0, PARAMS.getTierPriceMultiplier(0), PARAMS.getTierDelayMultiplier(0), 1, PARAMS.getRemoveTierPrice(), PARAMS.getMaxTransactionPerBlock()));
     }
 
     public boolean addTransactionToBestTier(Transaction tx) {
@@ -63,16 +63,16 @@ public class Mechanism {
         for (int i = 0; i < TIERS.size() - 1; i++) {
             Tier tier = TIERS.get(i);
             Tier nextTier = TIERS.get(i + 1);
-            if (nextTier.getPrice() > tier.getPrice() * PARAMS.getPriceMultiplier()) {
+            if (nextTier.getPrice() > tier.getPrice() * tier.getPriceMultiplier()) {
                 nextTier.setDelay(nextTier.getDelay() + 1);
 
             } else {
-                if (Math.random() * 100 < PARAMS.getProbabilityDecrease()) nextTier.setDelay(nextTier.getDelay() - 1);
+                if (Math.random() * 100 <= PARAMS.getProbabilityDecrease()) nextTier.setDelay(nextTier.getDelay() - 1);
 
                 nextTier.setDelay(
                         Math.max(
                                 nextTier.getDelay(),
-                                (int) Math.ceil(PARAMS.getMinDelayMultiplier() * tier.getDelay())
+                                (int) Math.ceil(tier.getDelayMultiplier() * tier.getDelay())
                         )
                 );
             }
@@ -88,8 +88,10 @@ public class Mechanism {
         if (TIERS.size() < PARAMS.getMaxTiers() && TIERS.get(TIERS.size() - 1).getPrice() > PARAMS.getAddTierPrice()) {
             Tier newTier = new Tier(
                     TIERS.size(),
-                    (int) Math.ceil(PARAMS.getMinDelayMultiplier() * TIERS.get(TIERS.size() - 1).getDelay()),
-                    PARAMS.getRemoveTierPrice(),
+                    PARAMS.getTierPriceMultiplier(TIERS.size()),
+                    PARAMS.getTierDelayMultiplier(TIERS.size()),
+                    (int) Math.ceil(PARAMS.getTierDelayMultiplier(TIERS.size() - 1) * TIERS.get(TIERS.size() - 1).getDelay()),
+                    Math.min(PARAMS.getRemoveTierPrice(), PARAMS.getTierPriceMultiplier(TIERS.size() - 1) * PARAMS.getRemoveTierPrice()),
                     PARAMS.getTargetTxCountPerTier()
             );
 

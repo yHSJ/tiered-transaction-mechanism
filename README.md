@@ -91,14 +91,12 @@ These parameters are used to configure the mechanism and are described in the pa
   This determines the minimum price of the final tier. If the price of the last tier is less than this price, the last
   tier is removed. The space of the removed tier is added to the first tier.
 
-- `price_percentage`: `integer` in the range `[0, 100]`
+- `tier_price_multipliers`: `double[]`
 
-  This is the parameter <code>µ<sub>i</sub></code> in the paper. If price of a tier is less
-  than `price_percentage / 100 * p` where `p` is the price of the subsequent tier, the delay of the current tier is
-  increased by one.
+  This is the parameter <code>µ<sub>i</sub></code> in the paper. If price of a tier `i+1` is less
+  than <code>tier_price_multipliers<sub>i+1</sub> * p<sub>i</sub></code> where <code>p<sub>i</sub></code> is the price
+  of the `i`th tier, the delay of the `i + 1`th tier is increased by one.
 
-- `delay_percentage`: `integer` in the range `[0, 100]`
+- `tier_delay_multipliers`: `double[]`
 
-  This is the parameter <code>λ<sub>i</sub></code> in the paper. If delay of a tier is greater than or
-  equal to `delay_percentage / 100 * d` where `d` is the price of the subsequent tier, the delay of the current tier is
-  decreased by one.
+  This is the parameter <code>λ<sub>i</sub></code> in the paper. The delay of tier `i` must be at least <code>p<sub>i-1</sub> * λ<sub>i-1</sub></code>.
